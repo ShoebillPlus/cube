@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  datasource:
+    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:127.0.0.1}:${DATASOURCE_PORT:3306}/cube_db?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=UTC
+    username: ${DATASOURCE_USERNAME:root}
+    password: ${DATASOURCE_PASSWORD:111111}
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    org.springframework.security: debug
+  config: classpath:logback-spring.xml
+auth-server-url: http://192.168.3.97:${server.port} # 授权服务地址
+auth-token-url: http://192.168.3.97:${server.port}/oauth/token # 授权token服务地址
+auth-authorize-url: http://192.168.3.97:${server.port}/oauth/authorize # 用户授权服务地址
+security:
+  oauth2:
+    client:
+      client-id: client_1
+      client-secret: user
+      access-token-uri: ${auth-token-url}
+      user-authorization-uri: ${auth-authorize-url}

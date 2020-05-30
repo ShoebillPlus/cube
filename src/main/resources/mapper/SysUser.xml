@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icicles.cube.DAO.SysUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.icicles.cube.entity.SysUser">
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, openid, name, card_id, birthday, phone, sex, login_account, login_pass, is_valid, account_non_expired, credentials_non_expired, account_non_locked, email, update_user_id, update_time, create_user_id, create_time, remark
+    </sql>
+
+    <select id="findPage" resultType="com.icicles.cube.entity.form.SysUserForm">
+        SELECT DISTINCT
+          a.id,
+          a.openid,
+          a.name,
+          a.card_id AS cardId,
+          a.birthday,
+          a.phone,
+          a.sex,
+          a.type,
+          a.login_account AS loginAccount,
+          a.login_pass AS loginpass,
+          a.is_valid AS isValid,
+          a.account_non_expired AS accountNonExpired,
+          a.credentials_non_expired AS credentialsNonExpired,
+          a.account_non_locked AS accountNonLocked,
+          a.email,
+          a.update_user_id AS updateUserId,
+          a.update_time AS updateTime,
+          a.create_user_id AS createUserId,
+          a.create_time AS createTime,
+          a.remark,
+          GROUP_CONCAT(DISTINCT b.`dept_id`) AS deptId,
+          GROUP_CONCAT(DISTINCT b.`role_id`) AS roleId,
+          GROUP_CONCAT(DISTINCT c.name) AS  deptName,
+          GROUP_CONCAT(DISTINCT d.name) AS  roleName
+        FROM
+          t_sys_user a
+          LEFT JOIN `t_sys_user_depts_roles` b
+          ON a.`id` = b.`user_id`
+          LEFT JOIN `t_sys_dept` c
+          ON b.`dept_id` = c.`id`
+          LEFT JOIN `t_sys_role` d
+          ON b.`role_id` = d.`id`
+          GROUP BY a.`id`
+    </select>
+
+</mapper>
